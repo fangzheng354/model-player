@@ -11,6 +11,8 @@ FLAGS = flags.FLAGS
 train_X = np.linspace(-1, 1, 100)
 train_Y = 2 * train_X + np.random.randn(*train_X.shape) * 0.33 + 10
 
+keys_placeholder = tf.placeholder("float")
+keys = tf.identity(keys_placeholder)
 X = tf.placeholder("float")
 Y = tf.placeholder("float")
 w = tf.Variable(0.0, name="weight")
@@ -23,8 +25,8 @@ predict_op1 = tf.mul(X, w) + b
 predict_op2 = tf.mul(X, w) + b + 1
 checkpoint_period = 10000
 saver = tf.train.Saver(sharded=True)
-tf.add_to_collection("inputs", json.dumps({'X': X.name, 'Y': Y.name}))
-tf.add_to_collection("outputs", json.dumps({'predict_op1': predict_op1.name, 'predict_op2': predict_op2.name}))
+tf.add_to_collection("inputs", json.dumps({'key': keys_placeholder.name, 'X': X.name, 'Y': Y.name}))
+tf.add_to_collection("outputs", json.dumps({'key': keys.name, 'predict_op1': predict_op1.name, 'predict_op2': predict_op2.name}))
 
 with tf.Session() as sess:
     sess.run(tf.initialize_all_variables())
