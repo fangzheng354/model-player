@@ -2,6 +2,7 @@
 
 import tensorflow as tf
 import numpy as np
+import json
 
 flags = tf.app.flags
 flags.DEFINE_string("mode", "train", "Mode to run, options: train or predict")
@@ -18,12 +19,12 @@ b = tf.Variable(0.0, name="bias")
 global_step = tf.Variable(0, name='global_step', trainable=False)
 loss = tf.square(Y - tf.mul(X, w) - b)
 train_op = tf.train.GradientDescentOptimizer(0.01).minimize(loss, global_step=global_step)
-predict_op = tf.mul(X, w) + b
+predict_op1 = tf.mul(X, w) + b
+predict_op2 = tf.mul(X, w) + b + 1
 checkpoint_period = 10000
 saver = tf.train.Saver(sharded=True)
-import json
 tf.add_to_collection("inputs", json.dumps({'X': X.name, 'Y': Y.name}))
-tf.add_to_collection("outputs", predict_op.name)
+tf.add_to_collection("outputs", json.dumps({'predict_op1': predict_op1.name, 'predict_op2': predict_op2.name}))
 
 with tf.Session() as sess:
     sess.run(tf.initialize_all_variables())
