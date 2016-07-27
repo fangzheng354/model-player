@@ -7,9 +7,10 @@ metadata:
     role: master
     tier: backend
 spec:
+  type: NodePort
   ports:
-  - port: 5000
-    targetPort: 5000
+  - name: model-player
+    port: 5000
   selector:
     app: redis
     role: master
