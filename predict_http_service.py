@@ -46,12 +46,12 @@ class InferenceService(object):
         # request_data = {'key': 1, 'X': 10.0, 'Y': 20.0}
         # inputs = {'key_placeholder': placeholder1, 'X': placeholder2, 'Y': placeholder3}
         # outputs = {'key': identity_op, 'predict_op1': predict_op1, 'predict_op2': predict_op2}
-        print("Request: {}".format(predict_sample))
+        print("Request data: {}".format(predict_sample))
         feed_dict = {}
         for key in self.inputs.keys():
             feed_dict[self.inputs[key]] = predict_sample[key]
         response = self.sess.run(self.outputs, feed_dict=feed_dict)
-        print("Response: {}".format(response))
+        print("Response data: {}".format(response))
         return response
         
 
