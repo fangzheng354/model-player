@@ -50,7 +50,9 @@ class InferenceService(object):
         feed_dict = {}
         for key in self.inputs.keys():
             feed_dict[self.inputs[key]] = predict_sample[key]
-        response = self.sess.run(self.outputs, feed_dict=feed_dict)
+        # TODO: this dict not works in docker container
+        #response = self.sess.run(self.outputs, feed_dict=feed_dict)
+        response = self.sess.run(self.outputs.values(), feed_dict=feed_dict)
         print("Response data: {}".format(response))
         return response
         
@@ -66,5 +68,5 @@ def main():
     return str(response)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0")
 
